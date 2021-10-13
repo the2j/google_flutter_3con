@@ -57,6 +57,7 @@ class SignInDemoState extends State<SignInDemo> {
       setState(() {
         _currentUser = account;
       });
+      //if not null
       if (_currentUser != null) {
         _handleGetContact();
       }

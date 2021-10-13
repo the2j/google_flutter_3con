@@ -1,7 +1,7 @@
 //import 'package:flutter_weko/api_controller/data_types.dart';
 //import 'package:flutter_weko/api_controller/weko_endpoints.dart';
 
-import 'package:segmentedgoogle/api_controller/weko_endpoints.dart';
+import 'package:google_flutter_con3/Googletesting/api_controller/weko_endpoints.dart';
 
 import 'data_types.dart';
 

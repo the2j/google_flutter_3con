@@ -5,7 +5,8 @@
 import 'dart:io';
 //for segmented
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:segmentedgoogle/api_controller/parent_controller.dart';
+import 'package:google_flutter_con3/Googletesting/api_controller/parent_controller.dart';
+//import 'package:segmentedgoogle/api_controller/parent_controller.dart';
 //import 'package:segmentedgoogle/api_controller/apple_controller.dart';
 
 

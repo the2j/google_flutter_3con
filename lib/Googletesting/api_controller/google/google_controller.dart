@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:googleapis/people/v1.dart';
 import 'package:googleapis/fitness/v1.dart';
-import 'package:googleapis/shared.dart';
+//import 'package:googleapis/shared.dart';
 import 'package:googleapis_auth/googleapis_auth.dart' as auth show AuthClient;
 //imports needed for acutal thing
 // import 'package:flutter_weko/api_controller/data_types.dart';
@@ -32,18 +32,18 @@ class GoogleController extends ParentController {
 
       //fitness api
       FitnessApi.fitnessActivityReadScope,
-      FitnessApi.fitnessBloodPressureReadScope,
-      FitnessApi.fitnessActivityWriteScope,
-      FitnessApi.fitnessBloodGlucoseReadScope,
-      FitnessApi.fitnessBloodGlucoseWriteScope,
-      FitnessApi.fitnessBodyReadScope,
-      FitnessApi.fitnessBodyTemperatureReadScope,
-      FitnessApi.fitnessHeartRateReadScope,
-      FitnessApi.fitnessNutritionReadScope,
-      FitnessApi.fitnessOxygenSaturationReadScope,
-      FitnessApi.fitnessReproductiveHealthReadScope,
-      FitnessApi.fitnessSleepReadScope,
-      FitnessApi.fitnessBloodPressureReadScope
+      // FitnessApi.fitnessBloodPressureReadScope,
+
+      // FitnessApi.fitnessBloodGlucoseReadScope,
+
+      // FitnessApi.fitnessBodyReadScope,
+      // FitnessApi.fitnessBodyTemperatureReadScope,
+      // FitnessApi.fitnessHeartRateReadScope,
+      // FitnessApi.fitnessNutritionReadScope,
+      // FitnessApi.fitnessOxygenSaturationReadScope,
+      // FitnessApi.fitnessReproductiveHealthReadScope,
+      // FitnessApi.fitnessSleepReadScope,
+      // FitnessApi.fitnessBloodPressureReadScope
     ],
   );
   //account
@@ -75,8 +75,13 @@ class GoogleController extends ParentController {
     print('Request auth start');
     if (!accessWasGranted) {
       // Retrieve an [auth.AuthClient] from the current [GoogleSignIn] instance.
+
+
+      print('auth strt');
       _googleSignIn.signInSilently();
       await _googleSignIn.signIn();
+      //
+      print('auth f');
       final auth.AuthClient? client = await _googleSignIn.authenticatedClient();
       assert(client != null, 'Authenticated client missing!');
 
