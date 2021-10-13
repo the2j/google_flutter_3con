@@ -8,12 +8,23 @@ import 'package:extension_google_sign_in_as_googleapis_auth/extension_google_sig
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:googleapis/people/v1.dart';
+import 'package:googleapis/fitness/v1.dart';
 import 'package:googleapis_auth/googleapis_auth.dart' as auth show AuthClient;
+import 'FitnessGoogleAPI.dart';
+import 'PersonGoogleAPI.dart';
 
 final GoogleSignIn _googleSignIn = GoogleSignIn(
   // Optional clientId
   // clientId: '[YOUR_OAUTH_2_CLIENT_ID]',
-  scopes: <String>[PeopleServiceApi.contactsReadonlyScope],
+  scopes: <String>[
+    //THIS IS IMPORTANT, THIS IS WHERE YOU ADD THE SCOPES YOU WANT TO GET DATA FOR
+
+    //People api
+    PeopleServiceApi.contactsReadonlyScope,
+    //fitness api
+    FitnessApi.fitnessActivityReadScope,
+    FitnessApi.fitnessBloodPressureReadScope
+  ],
 );
 
 void main() {
@@ -65,12 +76,58 @@ class SignInDemoState extends State<SignInDemo> {
 
     // Prepare a People Service authenticated client.
     final PeopleServiceApi peopleApi = PeopleServiceApi(client!);
+    
+    //fitness version
+    //final FitnessApi fitnessApi = FitnessApi(client!);
+    
+   
     // Retrieve a list of the `names` of my `connections`
     final ListConnectionsResponse response =
     await peopleApi.people.connections.list(
       'people/me',
-      personFields: 'names',
+      personFields: 'names'   //FIGURE OUT HOW TO DO THIS WITH MORE FIELDS//personFields: 'names,addresses,birthdays,calendarUrls,emailAddresses,genders,phoneNumbers'
+
     );
+
+
+    //MY OWN STUFF ----------------------------------------------------
+    //testing printing with google contacts data
+
+    // print('CONTACTS RESPONSE');
+    // List<Person> peopleresponse = response.connections!.toList();
+    // //first.names!.toList();
+    // for(var p in peopleresponse){
+    //   print(p.names!.first.displayName);
+    // }
+    //
+    // print('--END--');
+    //
+    // //test printing to json
+    // print('\n\nJSON CONTACT RESPONSE');
+    // print(peopleresponse);
+    // print('--JSON END--');
+
+    //fitness version
+    final FitnessApi fitnessApi = FitnessApi(client!);
+
+    // for dataSources requires a userID - ok so me just refers to , where can we get this? - use me
+    // printing
+
+    // final ListDataSourcesResponse responseFit =
+    // await fitnessApi.users.dataSources.list('me');
+    // print('FITNESS RESPONSE:');
+    // print(responseFit.dataSource.toString() );
+    // print('--END--');
+
+
+
+    PersonJsonPrint(peopleApi);
+    FitnessJsonPrint(fitnessApi);
+    //FUNCTIONS THAT DO THE STUFF ^
+
+
+    
+
 
     final String? firstNamedContactName =
     _pickFirstNamedContact(response.connections);
