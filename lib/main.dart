@@ -20,10 +20,11 @@ final GoogleSignIn _googleSignIn = GoogleSignIn(
     //THIS IS IMPORTANT, THIS IS WHERE YOU ADD THE SCOPES YOU WANT TO GET DATA FOR
 
     //People api
-    PeopleServiceApi.contactsReadonlyScope,
+    //PeopleServiceApi.contactsReadonlyScope,
     //fitness api
     FitnessApi.fitnessActivityReadScope,
-    FitnessApi.fitnessBloodPressureReadScope
+    FitnessApi.fitnessBloodPressureReadScope,
+    FitnessApi.fitnessBodyReadScope
   ],
 );
 

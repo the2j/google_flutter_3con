@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:extension_google_sign_in_as_googleapis_auth/extension_google_sign_in_as_googleapis_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_flutter_con3/Googletesting/api_controller/google/google_types.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:googleapis/people/v1.dart';
 import 'package:googleapis/fitness/v1.dart';
@@ -19,11 +20,20 @@ import '../parent_controller.dart';
 ///
 
 class GoogleController extends ParentController {
+  //do we even need this?
   void assignId(String deviceId) {
-    id = '$deviceId.google';
+    //id = '$deviceId.google';
+    id = '$deviceId.googleview';
     logAction('Assigned ID: $id');
   }
 
+  //variables
+  final String controllerType = 'google';
+  //are we logged in
+  bool accessWasGranted = false;
+  late FitnessApi fitnessApi;
+
+  //
   final GoogleSignIn _googleSignIn = GoogleSignIn(
     // Optional clientId
     // clientId: '[YOUR_OAUTH_2_CLIENT_ID]',
@@ -36,7 +46,7 @@ class GoogleController extends ParentController {
 
       // FitnessApi.fitnessBloodGlucoseReadScope,
 
-      // FitnessApi.fitnessBodyReadScope,
+      FitnessApi.fitnessBodyReadScope,
       // FitnessApi.fitnessBodyTemperatureReadScope,
       // FitnessApi.fitnessHeartRateReadScope,
       // FitnessApi.fitnessNutritionReadScope,
@@ -48,12 +58,15 @@ class GoogleController extends ParentController {
   );
   //account
   GoogleSignInAccount? _currentUser;
+  //user id - currently only me exists in google api
+  final String userId = 'me';
   //authorised client
 
   //api plugin instance
 
-  //are we logged in
-  bool accessWasGranted = false;
+
+
+
 
   @override
   void doFirstTimeSetup() {
@@ -64,11 +77,24 @@ class GoogleController extends ParentController {
   @override
   void updateData(DateTime startDate, DateTime endDate) {
     // TODO: implement updateData
+    String dateId = '${startDate.day}${startDate.month}${startDate.year}';
+    print('Date ID: $dateId');
+
+    //ensure we are actually authenticated then fetchdata
+    _requestAuth().then((void v) {
+      _fetchData(startDate, endDate).then((data) {
+        print("we got data!");
+      });
+    });
+
+
+
+
+
+
   }
 
-  ///
-  /// First login for google authenication
-  ///
+  /// First login for google authenication WORKING
   Future<void> _requestAuth() async {
     //checks if valid account exists and assigns it to accessWasGranted
     accessWasGranted = GoogleAcountStatus();
@@ -76,21 +102,23 @@ class GoogleController extends ParentController {
     if (!accessWasGranted) {
       // Retrieve an [auth.AuthClient] from the current [GoogleSignIn] instance.
 
-
+      //actual sign in
       print('auth strt');
       _googleSignIn.signInSilently();
       await _googleSignIn.signIn();
       //
       print('auth f');
+      //setup client
       final auth.AuthClient? client = await _googleSignIn.authenticatedClient();
       assert(client != null, 'Authenticated client missing!');
 
-      //update acesswasgranted var
+      //check and update acesswasgranted var
       accessWasGranted = GoogleAcountStatus();
 
-      //instance of fitnessapi to use, we need to figure out how to make it for the entire class IMPORTANT
-      final FitnessApi fitnessApi = FitnessApi(client!);
+      //instance of fitnessapi to use (requires client hence it is only setup now)
+      fitnessApi = FitnessApi(client!);
 
+      //ensure access was actually granted
       if (accessWasGranted) {
         logAction('Google Authorisation success');
       } else {
@@ -99,6 +127,50 @@ class GoogleController extends ParentController {
     }
 
     print('Request auth end');
+  }
+
+  ///Fetch data
+  ///
+  Future<List<String>> _fetchData(DateTime startDate, DateTime endDate)
+  async {
+    List<String> healthData = [];
+    //converts datetimes to ms since epoch - UNIX format
+    String startDateMS = startDate.microsecondsSinceEpoch.toString();
+    String endDateMS = endDate.microsecondsSinceEpoch.toString();
+    //final timestamp to be searched
+    String dataTimeMS = startDateMS + '-' + endDateMS;
+
+    //if there is an authenticated user
+    if (accessWasGranted) {
+      try {
+        Map<String?, List<DataPoint>?> googleHealthPoints = {};
+        //fitnessApi.users.dataSources.get(userId, dataSourceId)
+        GoogleTypes.GoogleHealthRequests.forEach((k, v) async {
+          if (v != null)
+            {
+              //await fitnessApi.users.dataSources.datasets.get('me',v,dataTimeMS);
+              Dataset currentdata = await fitnessApi.users.dataSources.datasets.get(userId, v, dataTimeMS);
+              googleHealthPoints.update(currentdata.dataSourceId, currentdata.point);
+            }
+
+        });
+
+        //fitnessApi.users.dataSources.
+
+        
+
+
+        logAction('Retrieving google health data');
+      }
+      catch (e) {
+        print('Caught exception in getHealthDataFromTypes: $e');
+      }
+    }
+    else {
+      logAction('Unable to retrieve google health data: no access');
+    }
+
+    return healthData;
   }
 
   /// Get account status,

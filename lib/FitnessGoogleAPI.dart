@@ -26,9 +26,21 @@ void FitnessJsonPrint(FitnessApi fitnessApi) async {
   //      dataTypeName: 'com.google.body.temperature.summary'
   //    );
 
+  final Dataset usersDatasetResource =
+  //await fitnessApi.users.dataSources.datasets.get('me',"derived:com.google.step_count.delta:com.google.android.gms:merge_step_deltas", "0-2065064028000000000");
+  await fitnessApi.users.dataSources.datasets.get('me',"derived:com.google.height:com.google.android.gms:merge_height", "2065064028000000000");
+
+   //usersDatasetResource.toJson();
+
+
   //TEST PRINT SOME STUFF
   print('\n--health data test print--');
-  print(allvarsum.toJson().toString());
+  //print(allvarsum.toJson().toString());
+  //print(usersDatasetResource.point.
+  //usersDatasetResource.point.
+  //);
+  //test = usersDatasetResource.toJson()
+  print(usersDatasetResource.toJson().toString());
   print('--END--\n');
 
   //print('--just body temp--');
