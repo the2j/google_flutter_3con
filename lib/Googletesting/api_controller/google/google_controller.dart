@@ -104,8 +104,9 @@ class GoogleController extends ParentController {
 
       //actual sign in
       print('auth strt');
-      _googleSignIn.signInSilently();
+
       await _googleSignIn.signIn();
+      _googleSignIn.signInSilently();
       //
       print('auth f');
       //setup client
@@ -142,7 +143,10 @@ class GoogleController extends ParentController {
 
     //if there is an authenticated user
     if (accessWasGranted) {
-      Dataset currentdata = await fitnessApi.users.dataSources.datasets.get(userId, "derived:com.google.step_count.delta:com.google.android.gms:merge_step_deltas", dataTimeMS);
+      //Dataset currentdata = await fitnessApi.users.dataSources.datasets.get(userId, "derived:com.google.step_count.delta:com.google.android.gms:merge_step_deltas", dataTimeMS);
+      //final Dataset currentdata = await fitnessApi.users.dataSources.datasets.get('me',"derived:com.google.step_count.delta:com.google.android.gms:merge_step_deltas", "1633392000000000000-1633564800000000000");
+      final Dataset currentdata = await fitnessApi.users.dataSources.datasets.get('me',"derived:com.google.weight:com.google.android.gms:merge_weight", "1633392000000000000-1633564800000000000");
+
       print(currentdata.toJson().toString());
       try {
 
