@@ -142,7 +142,10 @@ class GoogleController extends ParentController {
 
     //if there is an authenticated user
     if (accessWasGranted) {
+      Dataset currentdata = await fitnessApi.users.dataSources.datasets.get(userId, "derived:com.google.step_count.delta:com.google.android.gms:merge_step_deltas", dataTimeMS);
+      print(currentdata.toJson().toString());
       try {
+
         Map<String?, List<DataPoint>?> googleHealthPoints = {};
         //fitnessApi.users.dataSources.get(userId, dataSourceId)
         GoogleTypes.GoogleHealthRequests.forEach((k, v) async {
@@ -150,7 +153,9 @@ class GoogleController extends ParentController {
             {
               //await fitnessApi.users.dataSources.datasets.get('me',v,dataTimeMS);
               Dataset currentdata = await fitnessApi.users.dataSources.datasets.get(userId, v, dataTimeMS);
-              googleHealthPoints.update(currentdata.dataSourceId, currentdata.point);
+
+
+              //googleHealthPoints.update(currentdata.dataSourceId, currentdata.point);
             }
 
         });

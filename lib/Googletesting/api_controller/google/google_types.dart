@@ -16,7 +16,7 @@ class GoogleTypes {
   'heartRate':'',
   'height': 'derived:com.google.height:com.google.android.gms:merge_height',
   'restingHeartRate':'',
-  'steps':'',
+  'steps':'derived:com.google.step_count.delta:com.google.android.gms:merge_step_deltas',
   'waistCircumference':'',
   'walkingHeartRate':'',
   'weight':'derived:com.google.weight:com.google.android.gms:merge_weight',
@@ -38,12 +38,12 @@ class GoogleTypes {
 
 };
 
-  static const List<HealthDataType> googleTypes = [
+  static const List<String> googleTypes = [
     ];
 
 
 //
-  static const Map <String, String> googleToWekoBase {
-
-  };
+//   static Map <String, String> googleToWekoBase {
+//
+//   };
 }

@@ -45,6 +45,11 @@ class _homePageState extends State<homePage> {
       // ignore: unnecessary_statements
       GoogleController gtest = new GoogleController();
       gtest.doFirstTimeSetup();
+
+      //get some dates and times
+
+      gtest.updateData(DateTime(2015, 11, 11),DateTime.now());
+
     });
   }
 

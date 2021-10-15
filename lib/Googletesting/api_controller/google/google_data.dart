@@ -16,8 +16,8 @@ class GoogleHealthData extends UnifiedHealthData {
     });
   }
 
-  void addData(HealthDataPoint data) {
-    String? dataType = GoogleTypes().appleToWekoBase[data.type];
-    innerData[dataType!].add(data.value);
-  }
+  // void addData(HealthDataPoint data) {
+  //   String? dataType = GoogleTypes().appleToWekoBase[data.type];
+  //   innerData[dataType!].add(data.value);
+  // }
 }
