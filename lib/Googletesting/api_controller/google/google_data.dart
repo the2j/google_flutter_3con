@@ -12,14 +12,29 @@ class GoogleHealthData extends UnifiedHealthData {
 
   void addDataList(List<Dataset> data) {
     data.forEach((dataset) {
-      print(dataset.toJson().toString());
+      //print(dataset.toJson().toString());
       addData(dataset);
 
     });
 
   }
   void addData(Dataset data) {
-      String? dataType = GoogleTypes().appleToWekoBase[data.type];
-      innerData[dataType!].add(data.value);
+      String? dataType = data.dataSourceId;
+      print ('###################');
+      print(dataType);
+
+
+        switch(dataType) {
+          case "derived:com.google.height:com.google.android.gms:merge_height":
+            print("HERE WE EXTRACT HEIGHT DATA & PUSH TO WEKO");
+        }
+
+
+
+
+
+
+
+      //innerData[dataType!].add();
     }
 }
