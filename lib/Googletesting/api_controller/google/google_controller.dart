@@ -166,6 +166,8 @@ class GoogleController extends ParentController {
           Dataset currentdata = await fitnessApi.users.dataSources.datasets.get(userId, type, dataTimeMS);
           //currentdata.dataSourceId
           print(currentdata.toJson().toString());
+
+          //sends data to google_data which handles data transfer and format
           googleHealthData.add(currentdata);
 
         }
