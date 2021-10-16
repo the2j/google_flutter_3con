@@ -2,6 +2,14 @@
 class GoogleTypes {
   //const String device = "";
 
+  static const derivedValues = [
+    'derived:com.google.height:com.google.android.gms:merge_height',  //height
+    'derived:com.google.weight:com.google.android.gms:merge_weight', //weight
+    'derived:com.google.step_count.delta:com.google.android.gms:merge_step_deltas', //steps delta
+    'derived:com.google.blood_pressure:com.google.android.gms:merged' //blood pressure
+
+  ];
+
   static const Map<String, String> GoogleHealthRequests = {
   'activeEnergyBurned':'',
   'basalEnergyBurned':'',

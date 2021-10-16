@@ -48,12 +48,12 @@ class GoogleController extends ParentController {
 
       FitnessApi.fitnessBodyReadScope,
       // FitnessApi.fitnessBodyTemperatureReadScope,
-      // FitnessApi.fitnessHeartRateReadScope,
+      FitnessApi.fitnessHeartRateReadScope,
       // FitnessApi.fitnessNutritionReadScope,
       // FitnessApi.fitnessOxygenSaturationReadScope,
       // FitnessApi.fitnessReproductiveHealthReadScope,
       // FitnessApi.fitnessSleepReadScope,
-      // FitnessApi.fitnessBloodPressureReadScope
+      FitnessApi.fitnessBloodPressureReadScope
     ],
   );
   //account
@@ -104,9 +104,9 @@ class GoogleController extends ParentController {
 
       //actual sign in
       print('auth strt');
-
-      await _googleSignIn.signIn();
       _googleSignIn.signInSilently();
+      await _googleSignIn.signIn();
+
       //
       print('auth f');
       //setup client
@@ -136,8 +136,8 @@ class GoogleController extends ParentController {
   async {
     List<String> healthData = [];
     //converts datetimes to ms since epoch - UNIX format
-    String startDateMS = startDate.microsecondsSinceEpoch.toString();
-    String endDateMS = endDate.microsecondsSinceEpoch.toString();
+    String startDateMS = startDate.microsecondsSinceEpoch.toString() + '000';
+    String endDateMS = endDate.microsecondsSinceEpoch.toString() + '000';
     //final timestamp to be searched
     String dataTimeMS = startDateMS + '-' + endDateMS;
 
@@ -145,24 +145,35 @@ class GoogleController extends ParentController {
     if (accessWasGranted) {
       //Dataset currentdata = await fitnessApi.users.dataSources.datasets.get(userId, "derived:com.google.step_count.delta:com.google.android.gms:merge_step_deltas", dataTimeMS);
       //final Dataset currentdata = await fitnessApi.users.dataSources.datasets.get('me',"derived:com.google.step_count.delta:com.google.android.gms:merge_step_deltas", "1633392000000000000-1633564800000000000");
-      final Dataset currentdata = await fitnessApi.users.dataSources.datasets.get('me',"derived:com.google.weight:com.google.android.gms:merge_weight", "1633392000000000000-1633564800000000000");
+      //Dataset currentdata = await fitnessApi.users.dataSources.datasets.get('me',"derived:com.google.weight:com.google.android.gms:merge_weight", "1633392000000000000-1633564800000000000");
 
-      print(currentdata.toJson().toString());
+      //print(currentdata.toJson().toString());
       try {
 
         Map<String?, List<DataPoint>?> googleHealthPoints = {};
         //fitnessApi.users.dataSources.get(userId, dataSourceId)
-        GoogleTypes.GoogleHealthRequests.forEach((k, v) async {
-          if (v != null)
-            {
-              //await fitnessApi.users.dataSources.datasets.get('me',v,dataTimeMS);
-              Dataset currentdata = await fitnessApi.users.dataSources.datasets.get(userId, v, dataTimeMS);
+        for(int i = 0; i < GoogleTypes.derivedValues.length ; i++) {
+          String type = GoogleTypes.derivedValues[i];
+          print('------------');
+          print(type);
+          Dataset currentdata = await fitnessApi.users.dataSources.datasets.get(userId, type, dataTimeMS);
+          print(currentdata.toJson().toString());
 
+        }
 
-              //googleHealthPoints.update(currentdata.dataSourceId, currentdata.point);
-            }
-
-        });
+        // GoogleTypes.GoogleHealthRequests.forEach((k, v) async {
+        //   if (v != null)
+        //     {
+        //       print(v);
+        //       //await fitnessApi.users.dataSources.datasets.get('me',v,dataTimeMS);
+        //       Dataset currentdata = await fitnessApi.users.dataSources.datasets.get(userId, v, dataTimeMS);
+        //       print(currentdata.toJson().toString());
+        //
+        //
+        //       //googleHealthPoints.update(currentdata.dataSourceId, currentdata.point);
+        //     }
+        //
+        // });
 
         //fitnessApi.users.dataSources.
 
