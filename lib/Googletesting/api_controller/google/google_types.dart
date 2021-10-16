@@ -6,9 +6,24 @@ class GoogleTypes {
     'derived:com.google.height:com.google.android.gms:merge_height',  //height
     'derived:com.google.weight:com.google.android.gms:merge_weight', //weight
     'derived:com.google.step_count.delta:com.google.android.gms:merge_step_deltas', //steps delta
-    'derived:com.google.blood_pressure:com.google.android.gms:merged' //blood pressure
-
+    'derived:com.google.blood_pressure:com.google.android.gms:merged', //blood pressure
+    'derived:com.google.heart_rate.bpm:com.google.android.gms:merge_heart_rate_bpm', //heart rate
+    'derived:com.google.body.temperature:com.google.android.gms:merged', //body temperature
+    'derived:com.google.oxygen_saturation:com.google.android.gms:merged' //blood oxygen
   ];
+
+  // static const Map<String, String> googleToWekoBase = {
+  // 'derived:com.google.height:com.google.android.gms:merge_height': 'height',  //height
+  // 'derived:com.google.weight:com.google.android.gms:merge_weight': //weight
+  // 'derived:com.google.step_count.delta:com.google.android.gms:merge_step_deltas':'steps', //steps delta
+  // 'derived:com.google.blood_pressure:com.google.android.gms:merged': //blood pressure
+  // 'derived:com.google.heart_rate.bpm:com.google.android.gms:merge_heart_rate_bpm', //heart rate
+  // 'derived:com.google.body.temperature:com.google.android.gms:merged', //body temperature
+  // 'derived:com.google.oxygen_saturation:com.google.android.gms:merged' //blood oxygen
+  //
+  //  };
+
+
 
   static const Map<String, String> GoogleHealthRequests = {
   'activeEnergyBurned':'',

@@ -10,14 +10,16 @@ import '../unified_data.dart';
 class GoogleHealthData extends UnifiedHealthData {
   GoogleHealthData() : super();
 
-  void addDataList(List<DataPoint> data) {
-    data.forEach((dataPoint) {
-      addData(dataPoint);
-    });
-  }
+  void addDataList(List<Dataset> data) {
+    data.forEach((dataset) {
+      print(dataset.toJson().toString());
+      addData(dataset);
 
-  // void addData(HealthDataPoint data) {
-  //   String? dataType = GoogleTypes().appleToWekoBase[data.type];
-  //   innerData[dataType!].add(data.value);
-  // }
+    });
+
+  }
+  void addData(Dataset data) {
+      String? dataType = GoogleTypes().appleToWekoBase[data.type];
+      innerData[dataType!].add(data.value);
+    }
 }

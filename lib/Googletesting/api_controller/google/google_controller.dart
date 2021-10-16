@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:extension_google_sign_in_as_googleapis_auth/extension_google_sign_in_as_googleapis_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_flutter_con3/Googletesting/api_controller/google/google_data.dart';
 import 'package:google_flutter_con3/Googletesting/api_controller/google/google_types.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:googleapis/people/v1.dart';
@@ -42,17 +43,17 @@ class GoogleController extends ParentController {
 
       //fitness api
       FitnessApi.fitnessActivityReadScope,
-      // FitnessApi.fitnessBloodPressureReadScope,
+      FitnessApi.fitnessBloodPressureReadScope,
 
-      // FitnessApi.fitnessBloodGlucoseReadScope,
+      FitnessApi.fitnessBloodGlucoseReadScope,
 
       FitnessApi.fitnessBodyReadScope,
-      // FitnessApi.fitnessBodyTemperatureReadScope,
+      FitnessApi.fitnessBodyTemperatureReadScope,
       FitnessApi.fitnessHeartRateReadScope,
-      // FitnessApi.fitnessNutritionReadScope,
-      // FitnessApi.fitnessOxygenSaturationReadScope,
+      FitnessApi.fitnessNutritionReadScope,
+      FitnessApi.fitnessOxygenSaturationReadScope,
       // FitnessApi.fitnessReproductiveHealthReadScope,
-      // FitnessApi.fitnessSleepReadScope,
+      FitnessApi.fitnessSleepReadScope,
       FitnessApi.fitnessBloodPressureReadScope
     ],
   );
@@ -83,7 +84,10 @@ class GoogleController extends ParentController {
     //ensure we are actually authenticated then fetchdata
     _requestAuth().then((void v) {
       _fetchData(startDate, endDate).then((data) {
+
         print("we got data!");
+        GoogleHealthData googleHealthData = new GoogleHealthData();
+        googleHealthData.addDataList(data);
       });
     });
 
@@ -132,9 +136,11 @@ class GoogleController extends ParentController {
 
   ///Fetch data
   ///
-  Future<List<String>> _fetchData(DateTime startDate, DateTime endDate)
+  Future<List<Dataset>> _fetchData(DateTime startDate, DateTime endDate)
   async {
-    List<String> healthData = [];
+    List<Dataset> googleHealthData = [];
+
+
     //converts datetimes to ms since epoch - UNIX format
     String startDateMS = startDate.microsecondsSinceEpoch.toString() + '000';
     String endDateMS = endDate.microsecondsSinceEpoch.toString() + '000';
@@ -151,15 +157,20 @@ class GoogleController extends ParentController {
       try {
 
         Map<String?, List<DataPoint>?> googleHealthPoints = {};
+
         //fitnessApi.users.dataSources.get(userId, dataSourceId)
         for(int i = 0; i < GoogleTypes.derivedValues.length ; i++) {
           String type = GoogleTypes.derivedValues[i];
           print('------------');
           print(type);
           Dataset currentdata = await fitnessApi.users.dataSources.datasets.get(userId, type, dataTimeMS);
+          //currentdata.dataSourceId
           print(currentdata.toJson().toString());
+          googleHealthData.add(currentdata);
 
         }
+
+
 
         // GoogleTypes.GoogleHealthRequests.forEach((k, v) async {
         //   if (v != null)
@@ -190,7 +201,7 @@ class GoogleController extends ParentController {
       logAction('Unable to retrieve google health data: no access');
     }
 
-    return healthData;
+    return googleHealthData;
   }
 
   /// Get account status,
