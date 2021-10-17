@@ -33,61 +33,130 @@ class GoogleHealthData extends UnifiedHealthData {
   void addData(Dataset data) {
     var dataValues = <dynamic>[];
     String? dataType = data.dataSourceId;
-      print ('###################');
-      print(dataType);
-
       //get data in the correct format - so basically it is just the right values within a list
-
-        switch(dataType) {
-          // case statement above is to ensure data is put into the correct format for the unified data file
-
-
-          //case "derived:com.google.height:com.google.android.gms:merge_height":
-          case "derived:com.google.weight:com.google.android.gms:merge_weight":
-            //for specific dataset
-            data.point!.forEach((datapoint) {
-
-              //now iterate through value within datapoint
-              datapoint.value!.forEach((datavalue) {
-                //if values are not null then add the respective value
-                //currently accounts for int and float values (float is just double)
-                if(datavalue.fpVal != null) dataValues.add(datavalue.fpVal!);
-                else  {
-                  if (datavalue.intVal != null) dataValues.add(datavalue.intVal!);
-                }
-                //now add datavalue to dataVaules list
-
-
-
-              });
-
-              //manages datapoints
-              //datapoint
-
-
-
-
+      switch(dataType) {
+        case "derived:com.google.weight:com.google.android.gms:merge_weight":  //WEIGHT
+          var valuesList = <dynamic>[];
+          data.point!.forEach((datapoint) {
+            datapoint.value!.forEach((datavalue) {
+              if(datavalue.fpVal != null) valuesList.add(datavalue.fpVal!);
+              else  {
+                if (datavalue.intVal != null) valuesList.add(datavalue.intVal!);
+              }
             });
-            // //var value;
-            // for( in data.point!) {
-            //   v
-            //   if (value[] == dataType) {
-            //
-            //   }
-            //
-            // }
-            // print(data.point![0].value);
-            //
-            //
-            // print("HERE WE EXTRACT HEIGHT DATA & PUSH TO WEKO");
+          });
+
+          //SEND DATA valuesList TO WEKO
+          String dataname = "weight";
+          innerData[dataname].add(valuesList);
+          print("weight: " + valuesList.toString());
+          break;
+
+        case "derived:com.google.height:com.google.android.gms:merge_height":  //HEIGHT
+          var valuesList = <dynamic>[];
+          data.point!.forEach((datapoint) {
+            datapoint.value!.forEach((datavalue) {
+              if(datavalue.fpVal != null) valuesList.add(datavalue.fpVal!);
+              else  {
+                if (datavalue.intVal != null) valuesList.add(datavalue.intVal!);
+              }
+            });
+          });
+
+          //SEND DATA valuesList TO WEKO
+          String dataname = "height";
+          innerData[dataname].add(valuesList);
+          print("height: " + valuesList.toString());
+          break;
+
+        case "derived:com.google.step_count.delta:com.google.android.gms:merge_step_deltas": //STEPS
+          var valuesList = <dynamic>[];
+          data.point!.forEach((datapoint) {
+            datapoint.value!.forEach((datavalue) {
+              if(datavalue.fpVal != null) valuesList.add(datavalue.fpVal!);
+              else  {
+                if (datavalue.intVal != null) valuesList.add(datavalue.intVal!);
+              }
+            });
+          });
+
+          //SEND DATA valuesList TO WEKO
+          String dataname = "steps";
+          innerData[dataname].add(valuesList);
+          print("steps: " + valuesList.toString());
+          break;
+
+        case "derived:com.google.blood_pressure:com.google.android.gms:merged": //BLOOD PRESSURE
+          var valuesList = <dynamic>[];
+          data.point!.forEach((datapoint) {
+            datapoint.value!.forEach((datavalue) {
+              if(datavalue.fpVal != null) valuesList.add(datavalue.fpVal!);
+              else  {
+                if (datavalue.intVal != null) valuesList.add(datavalue.intVal!);
+              }
+            });
+          });
+
+          //SEND DATA valuesList TO WEKO
+          String dataname = "bloodPressureDiastolic";
+          innerData[dataname].add(valuesList);
+          print("blood pressure: " + valuesList.toString());
+          break;
+
+        case "derived:com.google.oxygen_saturation:com.google.android.gms:merged": //OXYGEN
+          var valuesList = <dynamic>[];
+          data.point!.forEach((datapoint) {
+            datapoint.value!.forEach((datavalue) {
+              if(datavalue.fpVal != null) valuesList.add(datavalue.fpVal!);
+              else  {
+                if (datavalue.intVal != null) valuesList.add(datavalue.intVal!);
+              }
+            });
+          });
+
+          //SEND DATA valuesList TO WEKO
+          String dataname = "bloodOxygen";
+          innerData[dataname].add(valuesList);
+          print("oxygen: " + valuesList.toString());
+
+          //valuesList[0] is saturation
+          //.,..
+
+          break;
+
+        case "derived:com.google.heart_rate.bpm:com.google.android.gms:merge_heart_rate_bpm": //HEART RATE
+          var valuesList = <dynamic>[];
+          data.point!.forEach((datapoint) {
+            datapoint.value!.forEach((datavalue) {
+              if(datavalue.fpVal != null) valuesList.add(datavalue.fpVal!);
+              else  {
+                if (datavalue.intVal != null) valuesList.add(datavalue.intVal!);
+              }
+            });
+          });
+
+          //SEND DATA valuesList TO WEKO
+          String dataname = "heartRate";
+          innerData[dataname].add(valuesList);
+          print("heartRate: " + valuesList.toString());
+          break;
+
+        case "derived:com.google.body.temperature:com.google.android.gms:merged": //BODY TEMPERATURE
+          var valuesList = <dynamic>[];
+          data.point!.forEach((datapoint) {
+            datapoint.value!.forEach((datavalue) {
+              if(datavalue.fpVal != null) valuesList.add(datavalue.fpVal!);
+              else  {
+                if (datavalue.intVal != null) valuesList.add(datavalue.intVal!);
+              }
+            });
+          });
+
+          //SEND DATA valuesList TO WEKO
+          String dataname = "bodyTemperature";
+          innerData[dataname].add(valuesList);
+          print("bodyTemperature: " + valuesList.toString());
+          break;
         }
-
-
-
-
-
-
-
-      //innerData[dataType!].add();
     }
 }
