@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:extension_google_sign_in_as_googleapis_auth/extension_google_sign_in_as_googleapis_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:google_flutter_con3/Googletesting/api_controller/google/google_data.dart';
-import 'package:google_flutter_con3/Googletesting/api_controller/google/google_types.dart';
+//import '../../../../../../1actual/wekogooglefit2/lib/api_controller/google/google_data.dart';
+//import '../../../../../../1actual/wekogooglefit2/lib/api_controller/google/google_types.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:googleapis/people/v1.dart';
 import 'package:googleapis/fitness/v1.dart';
@@ -15,6 +15,8 @@ import 'package:googleapis_auth/googleapis_auth.dart' as auth show AuthClient;
 // import 'package:flutter_weko/api_controller/parent_controller.dart';
 //import specific for segmented version
 import '../parent_controller.dart';
+import 'google_data.dart';
+import 'google_types.dart';
 
 ///
 /// class for signing into google, this allows you to add data scopes
