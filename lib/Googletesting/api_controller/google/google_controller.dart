@@ -91,8 +91,7 @@ class GoogleController extends ParentController {
         GoogleHealthData googleHealthData = new GoogleHealthData();
         googleHealthData.addDataList(data);
         print(googleHealthData.innerData.toString());
-
-
+        googleHealthData.pushToWeko('$id.$dateId');
       });
     });
 

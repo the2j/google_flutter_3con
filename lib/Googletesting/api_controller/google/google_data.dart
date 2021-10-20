@@ -64,6 +64,10 @@ class GoogleHealthData extends UnifiedHealthData {
               print("value added");
               if (datavalue.intVal != null) {valuesList.add(datavalue.intVal!);}
               print(datavalue.intVal);
+
+              //a hyper specific case - calculates bike distance (km)
+              if (wekoType == 'bikeDistance' && datavalue.intVal != null)
+                {valuesList.add(datavalue.intVal!*0.001954013);}
             }
           }
           pos++;
@@ -99,81 +103,40 @@ class GoogleHealthData extends UnifiedHealthData {
       //get data in the correct format - so basically it is just the right values within a list
       switch(dataType) {
         case "derived:com.google.weight:com.google.android.gms:merge_weight":  //WEIGHT
-          //WEIGHT
-          datasetAsList(data, GoogleTypes.googleToWekoBase[dataType].toString() );
-          break;
-
         case "derived:com.google.height:com.google.android.gms:merge_height":  //HEIGHT
-          //Height
-          datasetAsList(data, GoogleTypes.googleToWekoBase[dataType].toString() );
-          break;
-
         case "derived:com.google.step_count.delta:com.google.android.gms:merge_step_deltas": //STEPS
-          //steps
+        case "derived:com.google.cycling.wheel_revolution.cumulative:com.google.android.gms:merged": //BIKE DISTANCE
           datasetAsList(data, GoogleTypes.googleToWekoBase[dataType].toString() );
           break;
 
         case "derived:com.google.blood_pressure:com.google.android.gms:merged": //BLOOD PRESSURE
         //BLOOD PRESSURE
-          //String dataname = "bloodPressureDiastolic";
-          //var valuesList = <dynamic>[];
-          //datasetAsList(data, dataname, 0);
-          // for (int i = 0; i < valuesList.length; i++) {
-          //   if (i == 0 || i % 4 == 0) {
-          //     innerData["bloodPressureSystolic"].add(valuesList[i]);
-          //   }
-          //   else if ( i % 4 == 1)
-          //     {
-          //       innerData["bloodPressureDiastolic"].add(valuesList[i]);
-          //     }
-          // }
-          //innerData[dataname].add(valuesList);
           datasetAsList(data, "bloodPressureSystolic", 0);
           datasetAsList(data, "bloodPressureDiastolic", 1);
           //BLOOD PRESSURE - DIASSTOLIC AND SYSTOLIC
           break;
 
-        case "derived:com.google.oxygen_saturation:com.google.android.gms:merged": //OXYGEN
-        //SEND DATA valuesList TO WEKO
-        //latest & average
-        //BLOOD SATURATION
-          String dataname = "bloodOxygen";
-          var valuesList = <dynamic>[];
-          datasetAsList(data, dataname, 0);
-          // for (int i = 0; i < valuesList.length; i++) {
-          //   if(i == 0 || i % 5 == 0){
-          //     innerData[dataname].add(valuesList[i]);
-          //   }
-          // }
-          //innerData[dataname].add(valuesList[0]);
-          print("oxygen: " + valuesList.toString());
-          //valuesList[0] is saturation
-          //.,..
-
+        case "derived:com.google.oxygen_saturation:com.google.android.gms:merged"://BLOOD OXYGEN
+        case "derived:com.google.heart_rate.bpm:com.google.android.gms:merge_heart_rate_bpm"://HEART RATE
+        case "derived:com.google.body.temperature:com.google.android.gms:merged"://BODY TEMPERATURE
+        case "derived:com.google.blood_glucose:com.google.android.gms:merged": //BLOOD GLUCOSE
+        case "derived:com.google.body.fat.percentage:com.google.android.gms:merged": //BODY FAT %
+        case "derived:com.google.active_minutes:com.google.android.gms:merged": //MOVE MINUTES
+          datasetAsList(data, GoogleTypes.googleToWekoBase[dataType].toString(), 0);
           break;
-
-        case "derived:com.google.heart_rate.bpm:com.google.android.gms:merge_heart_rate_bpm": //HEART RATE
-          var valuesList = <dynamic>[];
-          //SEND DATA valuesList TO WEKO
-          String dataname = "heartRate";
-          datasetAsList(data, dataname);
-          print("heartRate: " + valuesList.toString());
+        //calories
+        case 'derived:com.google.calories.expended:com.google.android.gms:merge'://'activeEnergyBurned' - custom since their isnt one for just active lol
+          print("not implimented!");
           break;
-
-        case "derived:com.google.body.temperature:com.google.android.gms:merged": //BODY TEMPERATURE
-          //SEND DATA valuesList TO WEKO
-          String dataname = "bodyTemperature";
-          var valuesList = <dynamic>[];
-          datasetAsList(data, dataname, 0);
-          // for (int i = 0; i < valuesList.length; i++) {
-          //   if(i == 0 || i % 2 == 0){
-          //     innerData[dataname].add(valuesList[i]);
-          //   }
-          // }
-
-          //innerData[dataname].add(valuesList);
-          print("bodyTemperature: " + valuesList.toString());
+        case 'derived:com.google.calories.bmr:com.google.android.gms:merged': //'basalEnergyBurned',
+          datasetAsList(data, GoogleTypes.googleToWekoBase[dataType].toString(), 0);
           break;
+        //bike distance custom
+
+
+
+
+        //sleep cases
 
         }
 
