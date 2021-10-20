@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import '../unified_data.dart';
 import 'package:extension_google_sign_in_as_googleapis_auth/extension_google_sign_in_as_googleapis_auth.dart';
 import 'package:flutter/material.dart';
 //import '../../../../../../1actual/wekogooglefit2/lib/api_controller/google/google_data.dart';
@@ -87,9 +87,11 @@ class GoogleController extends ParentController {
     _requestAuth().then((void v) {
       _fetchData(startDate, endDate).then((data) {
 
-        print("we got data!");
+        print("_______we got data!_________");
         GoogleHealthData googleHealthData = new GoogleHealthData();
         googleHealthData.addDataList(data);
+        print(googleHealthData.innerData.toString());
+
 
       });
     });

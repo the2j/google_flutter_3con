@@ -19,8 +19,8 @@ class GoogleTypes {
     //'basalEnergyBurned',
     //     'bloodGlucose',
     //     'bloodOxygen',
-    'derived:com.google.blood_pressure:com.google.android.gms:merged': 'blood_pressure',//'bloodPressureDiastolic',
-    //     'bloodPressureSystolic',
+    'derived:com.google.blood_pressure:com.google.android.gms:merged': 'bloodPressureDiastolic', //NOTE CANNOT HAVE DUPE KEY, MANAGED IN ADDDATA FUNCTION
+    //'derived:com.google.blood_pressure:com.google.android.gms:merged':  'bloodPressureSystolic',
     //     'bodyFatPercentage',
     //     'bodyMassIndex',
     //     'bodyTemperature',

@@ -21,7 +21,8 @@ class GoogleHealthData extends UnifiedHealthData {
 
 
 ///
-/// manages a list of all current health data types
+/// sends each avalible health dataset to addData
+  /// [data] list of google datasets
   ///
   void addDataList(List<Dataset> data) {
     //DataP
@@ -46,11 +47,12 @@ class GoogleHealthData extends UnifiedHealthData {
     var valuesList = <dynamic>[];
     if (wekoType == null || Dataset == null) print("weko value not found");
     else {
+      print(data.dataSourceId.toString());
       data.point!.forEach((datapoint) {
         int pos = 0;
         datapoint.value!.forEach((datavalue) {
           if (indx == -1 || indx == pos) {
-            print("value found");
+            print("value found of: " + wekoType);
             print("pos = " + pos.toString() +" | indx = " + indx.toString() );
             //gets either intger value or floating point value
             if (datavalue.fpVal != null) {
@@ -68,22 +70,23 @@ class GoogleHealthData extends UnifiedHealthData {
         });
 
     });
-      print("[");
-      valuesList.forEach((element) {print(element.toString() + ", ");});
-      print("]");
+      print(">[");
+      valuesList.forEach((element) {print(">- " + element.toString() + ", ");});
+      print(">]");
       //add data to innerData map that will be sent to weko
       if (valuesList.length > 0) {
         print("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW");
         for (int i = 0; i < valuesList.length; i++) {
+          print(i.toString());
           innerData[wekoType].add(valuesList[i]);
-          print(valuesList[i]);
+
         }
-        print("W END");
+        print("_____________W END____________");
         //add values to innerdata to transfer to weko
         //return valuesList;
       }
       else print("no values for: " + wekoType + "  LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL");
-      print(data.dataSourceId.toString());
+
     }
   }
 
@@ -97,8 +100,7 @@ class GoogleHealthData extends UnifiedHealthData {
       switch(dataType) {
         case "derived:com.google.weight:com.google.android.gms:merge_weight":  //WEIGHT
           //WEIGHT
-          //datasetAsList(data, GoogleTypes.googleToWekoBase[dataType].toString() );
-          datasetAsList(data, "weight");
+          datasetAsList(data, GoogleTypes.googleToWekoBase[dataType].toString() );
           break;
 
         case "derived:com.google.height:com.google.android.gms:merge_height":  //HEIGHT
@@ -107,18 +109,15 @@ class GoogleHealthData extends UnifiedHealthData {
           break;
 
         case "derived:com.google.step_count.delta:com.google.android.gms:merge_step_deltas": //STEPS
-          var valuesList = <dynamic>[];
-          //SEND DATA valuesList TO WEKO
-          String dataname = "steps";
-          datasetAsList(data,dataname);
-          print("steps: " + valuesList.toString());
+          //steps
+          datasetAsList(data, GoogleTypes.googleToWekoBase[dataType].toString() );
           break;
 
         case "derived:com.google.blood_pressure:com.google.android.gms:merged": //BLOOD PRESSURE
-        //SEND DATA valuesList TO WEKO
-          String dataname = "bloodPressureDiastolic";
-          var valuesList = <dynamic>[];
-          datasetAsList(data, dataname, 0);
+        //BLOOD PRESSURE
+          //String dataname = "bloodPressureDiastolic";
+          //var valuesList = <dynamic>[];
+          //datasetAsList(data, dataname, 0);
           // for (int i = 0; i < valuesList.length; i++) {
           //   if (i == 0 || i % 4 == 0) {
           //     innerData["bloodPressureSystolic"].add(valuesList[i]);
@@ -129,7 +128,9 @@ class GoogleHealthData extends UnifiedHealthData {
           //     }
           // }
           //innerData[dataname].add(valuesList);
-          print("blood pressure: " + valuesList.toString());
+          datasetAsList(data, "bloodPressureSystolic", 0);
+          datasetAsList(data, "bloodPressureDiastolic", 1);
+          //BLOOD PRESSURE - DIASSTOLIC AND SYSTOLIC
           break;
 
         case "derived:com.google.oxygen_saturation:com.google.android.gms:merged": //OXYGEN
@@ -175,6 +176,6 @@ class GoogleHealthData extends UnifiedHealthData {
           break;
 
         }
-        print(innerData.toString());
+
     }
 }
