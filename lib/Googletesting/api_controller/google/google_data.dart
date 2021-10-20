@@ -3,6 +3,7 @@
 //import 'package:health/health.dart';
 
 import 'dart:ffi';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 
@@ -11,6 +12,9 @@ import 'google_types.dart';
 import 'package:googleapis/fitness/v1.dart';
 
 //import '../../../../../googleapi/google_flutter_con3/lib/Googletesting/api_controller/unified_data.dart';
+
+
+
 
 class GoogleHealthData extends UnifiedHealthData {
   GoogleHealthData() : super();
@@ -38,30 +42,49 @@ class GoogleHealthData extends UnifiedHealthData {
   /// [data] fitness dataset - contains health values for request and other information
   /// [wekType] name of the health data type that is to be passed to within data_types
   /// [indx] if multiple values are returned for a datapoint, get the required values index
-  List<dynamic> datasetAsList(Dataset data,String wekoType, [int indx = -1]) {
-
+   void datasetAsList(Dataset data,String? wekoType, [int indx = -1]) {  //List<dynamic>
     var valuesList = <dynamic>[];
-    data.point!.forEach((datapoint) {
-      int pos = 0;
-      datapoint.value!.forEach((datavalue) {
-        if (indx == -1 || indx == pos) {
-          //gets either intger value or floating point value
-          if (datavalue.fpVal != null)
-            valuesList.add(datavalue.fpVal!);
-          else {
-            if (datavalue.intVal != null) valuesList.add(datavalue.intVal!);
+    if (wekoType == null || Dataset == null) print("weko value not found");
+    else {
+      data.point!.forEach((datapoint) {
+        int pos = 0;
+        datapoint.value!.forEach((datavalue) {
+          if (indx == -1 || indx == pos) {
+            print("value found");
+            print("pos = " + pos.toString() +" | indx = " + indx.toString() );
+            //gets either intger value or floating point value
+            if (datavalue.fpVal != null) {
+              print("value added");
+              valuesList.add(datavalue.fpVal!);
+              print(datavalue.fpVal);
+            }
+            else {
+              print("value added");
+              if (datavalue.intVal != null) {valuesList.add(datavalue.intVal!);}
+              print(datavalue.intVal);
+            }
           }
-        }
-        pos++;
-      });
+          pos++;
+        });
 
-  });
-    //add data to innerData map that will be sent to weko
-    for (int i = 0; i < valuesList.length; i++) {
-      innerData[wekoType].add(valuesList[i]);
+    });
+      print("[");
+      valuesList.forEach((element) {print(element.toString() + ", ");});
+      print("]");
+      //add data to innerData map that will be sent to weko
+      if (valuesList.length > 0) {
+        print("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW");
+        for (int i = 0; i < valuesList.length; i++) {
+          innerData[wekoType].add(valuesList[i]);
+          print(valuesList[i]);
+        }
+        print("W END");
+        //add values to innerdata to transfer to weko
+        //return valuesList;
+      }
+      else print("no values for: " + wekoType + "  LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL");
+      print(data.dataSourceId.toString());
     }
-    //add values to innerdata to transfer to weko
-    return valuesList;
   }
 
   ///
@@ -73,28 +96,21 @@ class GoogleHealthData extends UnifiedHealthData {
       //get data in the correct format - so basically it is just the right values within a list
       switch(dataType) {
         case "derived:com.google.weight:com.google.android.gms:merge_weight":  //WEIGHT
-          //SEND DATA valuesList TO WEKO
-          String dataname = "weight";
-          var valuesList = <dynamic>[];
-          valuesList = datasetAsList(data, dataname);
-
-          print("weight: " + valuesList.toString());
+          //WEIGHT
+          //datasetAsList(data, GoogleTypes.googleToWekoBase[dataType].toString() );
+          datasetAsList(data, "weight");
           break;
 
         case "derived:com.google.height:com.google.android.gms:merge_height":  //HEIGHT
-          //SEND DATA valuesList TO WEKO
-          String dataname = "height";
-          var valuesList = <dynamic>[];
-          valuesList = datasetAsList(data, dataname);
-
-          print("height: " + valuesList.toString());
+          //Height
+          datasetAsList(data, GoogleTypes.googleToWekoBase[dataType].toString() );
           break;
 
         case "derived:com.google.step_count.delta:com.google.android.gms:merge_step_deltas": //STEPS
           var valuesList = <dynamic>[];
           //SEND DATA valuesList TO WEKO
           String dataname = "steps";
-          valuesList = datasetAsList(data,dataname);
+          datasetAsList(data,dataname);
           print("steps: " + valuesList.toString());
           break;
 
@@ -102,7 +118,7 @@ class GoogleHealthData extends UnifiedHealthData {
         //SEND DATA valuesList TO WEKO
           String dataname = "bloodPressureDiastolic";
           var valuesList = <dynamic>[];
-          valuesList = datasetAsList(data, dataname, 0);
+          datasetAsList(data, dataname, 0);
           // for (int i = 0; i < valuesList.length; i++) {
           //   if (i == 0 || i % 4 == 0) {
           //     innerData["bloodPressureSystolic"].add(valuesList[i]);
@@ -122,7 +138,7 @@ class GoogleHealthData extends UnifiedHealthData {
         //BLOOD SATURATION
           String dataname = "bloodOxygen";
           var valuesList = <dynamic>[];
-          valuesList = datasetAsList(data, dataname, 0);
+          datasetAsList(data, dataname, 0);
           // for (int i = 0; i < valuesList.length; i++) {
           //   if(i == 0 || i % 5 == 0){
           //     innerData[dataname].add(valuesList[i]);
@@ -139,7 +155,7 @@ class GoogleHealthData extends UnifiedHealthData {
           var valuesList = <dynamic>[];
           //SEND DATA valuesList TO WEKO
           String dataname = "heartRate";
-          valuesList = datasetAsList(data, dataname);
+          datasetAsList(data, dataname);
           print("heartRate: " + valuesList.toString());
           break;
 
@@ -147,7 +163,7 @@ class GoogleHealthData extends UnifiedHealthData {
           //SEND DATA valuesList TO WEKO
           String dataname = "bodyTemperature";
           var valuesList = <dynamic>[];
-          valuesList = datasetAsList(data, dataname, 0);
+          datasetAsList(data, dataname, 0);
           // for (int i = 0; i < valuesList.length; i++) {
           //   if(i == 0 || i % 2 == 0){
           //     innerData[dataname].add(valuesList[i]);

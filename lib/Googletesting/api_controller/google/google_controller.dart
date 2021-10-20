@@ -90,6 +90,7 @@ class GoogleController extends ParentController {
         print("we got data!");
         GoogleHealthData googleHealthData = new GoogleHealthData();
         googleHealthData.addDataList(data);
+
       });
     });
 
@@ -161,7 +162,7 @@ class GoogleController extends ParentController {
         Map<String?, List<DataPoint>?> googleHealthPoints = {};
 
         //fitnessApi.users.dataSources.get(userId, dataSourceId)
-        for(int i = 0; i < GoogleTypes.derivedValues.length ; i++) {
+        for(int i = 0; i < GoogleTypes.derivedValues.length ; i++) { //
           String type = GoogleTypes.derivedValues[i];
           print('------------');
           print(type);
